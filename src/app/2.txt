@@ -1,0 +1,53 @@
+ELF 头：
+  Magic：   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (可执行文件)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  入口点地址：               0x1400040
+  程序头起点：          52 (bytes into file)
+  Start of section headers:          8888 (bytes into file)
+  标志：             0x0
+  本头的大小：       52 (字节)
+  程序头大小：       32 (字节)
+  Number of program headers:         3
+  节头大小：         40 (字节)
+  节头数量：         14
+  字符串表索引节头： 11
+
+节头：
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        01400000 001000 000328 00  AX  0   0 16
+  [ 2] .rodata           PROGBITS        01400328 001328 00000b 00   A  0   0  1
+  [ 3] .eh_frame         PROGBITS        01400334 001334 0000f8 00   A  0   0  4
+  [ 4] .data             PROGBITS        0140142c 00142c 00001b 00  WA  0   0  1
+  [ 5] .comment          PROGBITS        00000000 001447 000024 01  MS  0   0  1
+  [ 6] .debug_aranges    PROGBITS        00000000 00146b 000060 00      0   0  1
+  [ 7] .debug_info       PROGBITS        00000000 0014cb 0006a1 00      0   0  1
+  [ 8] .debug_abbrev     PROGBITS        00000000 001b6c 0002ae 00      0   0  1
+  [ 9] .debug_line       PROGBITS        00000000 001e1a 00016b 00      0   0  1
+  [10] .debug_str        PROGBITS        00000000 001f85 0002af 01  MS  0   0  1
+  [11] .shstrtab         STRTAB          00000000 002234 000082 00      0   0  1
+  [12] .symtab           SYMTAB          00000000 0024e8 0002f0 10     13  29  4
+  [13] .strtab           STRTAB          00000000 0027d8 00013e 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings)
+  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  O (extra OS processing required) o (OS specific), p (processor specific)
+
+程序头：
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x001000 0x01400000 0x01400000 0x0042c 0x0042c R E 0x1000
+  LOAD           0x00142c 0x0140142c 0x0140142c 0x0001b 0x0001b RW  0x1000
+  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RWE 0x10
+
+ Section to Segment mapping:
+  段节...
+   00     .text .rodata .eh_frame 
+   01     .data 
+   02     

@@ -1,0 +1,14 @@
+#!/bin/sh
+umount /mnt/fat32/
+mkfs.vfat -F 32 /dev/mapper/loop0p1
+dd if=./boot/bootMBR.bin of=udisk.img bs=1 count=446 conv=notrunc
+mount /dev/mapper/loop0p1 /mnt/fat32/
+cp ./osloader/osloader.bin /mnt/fat32/
+cp ./kernel/kernelex.elf /mnt/fat32/
+cp ./test/TESTFILE	/mnt/fat32/
+cp ./test/TESTCALL /mnt/fat32/
+cp ./app/ECHO /mnt/fat32/
+cp ./data/ASC16 /mnt/fat32/
+sync
+
+

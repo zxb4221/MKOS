@@ -1,0 +1,2 @@
+#!/bin/sh
+../../bochs-2.6.6/bochs -f ./bochsrc
