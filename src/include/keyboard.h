@@ -12,7 +12,7 @@
 /************************************************************************/
 /*                          Macros Declaration                          */
 /************************************************************************/
-#define	KB_IN_BYTES	32	/* size of keyboard input buffer */
+#define	KB_IN_BYTES	16	/* size of keyboard input buffer */
 #define MAP_COLS	3	/* Number of columns in keymap */
 #define NR_SCAN_CODES	0x80	/* Number of scan codes (rows in keymap) */
 

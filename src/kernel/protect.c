@@ -4,9 +4,9 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                     Forrest Yu, 2005
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
+
 #include "../include/fs.h"
 #include "../include/protect.h"
 #include "../include/tty.h"

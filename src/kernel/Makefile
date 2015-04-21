@@ -4,8 +4,8 @@ CFLAGS = -fno-stack-protector -g -c -m32  -fno-builtin -o
 LD = ld
 
 OBJS=kernelex.o start.o global.o kliba.o stringAsm.o protect.o i8259.o klib.o main.o clock.o syscall.o proc.o \
-	keyboard.o tty.o ../lib/vsprintf.o ../lib/printf.o misc.o console.o systask.o hd.o fs.o mm.o gui.o string.o kmalloc.o memory.o \
-	init.o shell.o
+	keyboard.o mouse.o tty.o ../lib/vsprintf.o ../lib/printf.o misc.o console.o systask.o hd.o fs.o mm.o gui.o string.o kmalloc.o memory.o \
+	init.o shell.o task_mouse.o
 
 all : kernelex.elf
 
@@ -22,6 +22,9 @@ string.o : ./string.c
 	$(CC) $(CFLAGS) $@ $<
 
 shell.o : ../services/shell.c
+	$(CC) $(CFLAGS) $@ $<
+	
+task_mouse.o : ../services/task_mouse.c
 	$(CC) $(CFLAGS) $@ $<
 	
 init.o : ../services/init.c
@@ -50,6 +53,9 @@ misc.o : ./misc.c
 tty.o : ../services/tty.c
 	$(CC) $(CFLAGS) $@ $<
 
+mouse.o : ./mouse.c
+	$(CC) $(CFLAGS) $@ $<
+	
 keyboard.o : ./keyboard.c
 	$(CC) $(CFLAGS) $@ $<
 

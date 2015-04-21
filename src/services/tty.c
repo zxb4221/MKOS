@@ -5,8 +5,8 @@
                                                     Forrest Yu, 2005
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
 #include "../include/fs.h"
 #include "../include/protect.h"
 #include "../include/string.h"
@@ -23,14 +23,19 @@ PUBLIC	TTY		tty;
 PUBLIC	CONSOLE		console;
 void flush(CONSOLE* p_con);
 
+void putCharMsgToProc(struct proc* p, u8 ch);
 
-PRIVATE void init_tty(TTY* p_tty);
-PRIVATE void tty_do_read(TTY* p_tty);
+extern unsigned char* VIDEO_VRAM;
+void printStringXXX(unsigned char* vram, char *string, int size, int xsize, int x, int y) ;
+void init_tty(TTY* p_tty);
+void tty_do_read(TTY* p_tty);
 PRIVATE void tty_do_write(TTY* p_tty);
 PRIVATE void put_key(TTY* p_tty, u32 key);
 
 PRIVATE char szTTYBuffer[256] = {0};
 PRIVATE int	nTTYBufferIndex = 0;
+
+PUBLIC u32 in_processEx(u32 key);
 /*======================================================================*
                            task_tty
  *======================================================================*/
@@ -45,14 +50,16 @@ PUBLIC void task_tty()
 	p_tty = &tty;
 	init_tty(p_tty);
 	flush(&console);
-	//select_console(0);
 
 	while (1)
 	{
-
+		send_recv(RECEIVE, ANY, &msg);
+		/*
 		tty_do_read(p_tty);
+		printStringXXX(VIDEO_VRAM,"T",1,800,0,500);
 		if (p_tty->inbuf_count)
 		{
+
 			if (*(p_tty->p_inbuf_tail) == '\n')
 			{
 				tty_do_write(p_tty);
@@ -73,6 +80,10 @@ PUBLIC void task_tty()
 				char ch = *(p_tty->p_inbuf_tail);
 				tty_do_write(p_tty);
 				szTTYBuffer[nTTYBufferIndex++] = ch;
+
+				struct proc* pShell = proc_table[8];
+				putCharMsgToProc(pShell,ch);
+				printStringXXX(VIDEO_VRAM,"t",1,800,0,550);
 			}
 		}
 
@@ -82,24 +93,101 @@ PUBLIC void task_tty()
 			src = msg.source;
 			f_WaitSend = 1;
 		}
+		*/
 
 	}
 }
 
+void putCharMsgToProc(struct proc* p, u8 ch)
+{
+	PROC_MSG_LIST* pml = p->pl;
+	if (pml->count < PROC_MSG_MAX) {
+			MSG msg;
+			msg.type = MSG_CHAR;
+			msg.param1 = ch;
+
+			*(pml->p_head) = msg;
+			pml->p_head++;
+			if (pml->p_head == pml->data + PROC_MSG_MAX) {
+				pml->p_head = pml->data;
+			}
+			pml->count++;
+
+		}
+
+}
 /*======================================================================*
 			   init_tty
  *======================================================================*/
-PRIVATE void init_tty(TTY* p_tty)
+void init_tty(TTY* p_tty)
 {
 	p_tty->inbuf_count = 0;
 	p_tty->p_inbuf_head = p_tty->p_inbuf_tail = p_tty->in_buf;
 
 	init_screen(p_tty);
 }
-
+PUBLIC u32 in_processEx(u32 key)
+{
+        if (!(key & FLAG_EXT)) {
+        	return key;
+        }
+        else {
+                int raw_code = key & MASK_RAW;
+                switch(raw_code) {
+                case ENTER:
+			return '\n';
+			break;
+                case BACKSPACE:
+			return '\b';
+			break;
+                case UP:
+                	/*
+                        if ((key & FLAG_SHIFT_L) || (key & FLAG_SHIFT_R)) {
+				scroll_screen(p_tty->p_console, SCR_DN);
+                        }
+                        */
+			break;
+		case DOWN:
+			/*
+			if ((key & FLAG_SHIFT_L) || (key & FLAG_SHIFT_R)) {
+				scroll_screen(p_tty->p_console, SCR_UP);
+			}
+			*/
+			break;
+		case F1:
+		case F2:
+		case F3:
+		case F4:
+		case F5:
+		case F6:
+		case F7:
+		case F8:
+		case F9:
+		case F10:
+		case F11:
+		case F12:
+			/* Alt + F1~F12 */
+			if ((key & FLAG_ALT_L) || (key & FLAG_ALT_R)) {
+				//select_console(raw_code - F1);
+			}
+			else {
+				if (raw_code == F12) {
+					disable_int();
+					dump_proc(proc_table[4]);
+					for(;;);
+				}
+			}
+			break;
+                default:
+                        break;
+                }
+        }
+        return 0;
+}
 /*======================================================================*
 				in_process
  *======================================================================*/
+/*
 PUBLIC void in_process(TTY* p_tty, u32 key)
 {
         if (!(key & FLAG_EXT)) {
@@ -136,7 +224,7 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
 		case F10:
 		case F11:
 		case F12:
-			/* Alt + F1~F12 */
+			// Alt + F1~F12
 			if ((key & FLAG_ALT_L) || (key & FLAG_ALT_R)) {
 				//select_console(raw_code - F1);
 			}
@@ -153,10 +241,12 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
                 }
         }
 }
+*/
 
 /*======================================================================*
 			      put_key
 *======================================================================*/
+/*
 PRIVATE void put_key(TTY* p_tty, u32 key)
 {
 	if (p_tty->inbuf_count < TTY_IN_BYTES) {
@@ -169,21 +259,24 @@ PRIVATE void put_key(TTY* p_tty, u32 key)
 
 	}
 }
-
+*/
 
 /*======================================================================*
 			      tty_do_read
  *======================================================================*/
-PRIVATE void tty_do_read(TTY* p_tty)
+
+/*
+void tty_do_read(TTY* p_tty)
 {
 
 	keyboard_read(p_tty);
 }
-
+*/
 
 /*======================================================================*
 			      tty_do_write
  *======================================================================*/
+/*
 PRIVATE void tty_do_write(TTY* p_tty)
 {
 	if (p_tty->inbuf_count) {
@@ -197,10 +290,11 @@ PRIVATE void tty_do_write(TTY* p_tty)
 		out_char(p_tty->p_console, ch);
 	}
 }
-
+*/
 /*======================================================================*
                               tty_write
 *======================================================================*/
+/*
 PUBLIC void tty_write(TTY* p_tty, char* buf, int len)
 {
         char* p = buf;
@@ -211,7 +305,7 @@ PUBLIC void tty_write(TTY* p_tty, char* buf, int len)
                 i--;
         }
 }
-
+*/
 void* va2py(struct proc* p, void* va)
 {
 	u32 vAddr = (u32)va;

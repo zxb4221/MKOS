@@ -1,5 +1,5 @@
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
 #include "../include/fs.h"
 #include "../include/protect.h"
 #include "../include/proc.h"
@@ -16,10 +16,14 @@ static void StartShell();
 
 void task_init()
 {
+	u32 i = 0;
+	while(i++ < 10000000);
     StartShell();
 
     while(1)
     {
+    	MESSAGE msg;
+    	send_recv(RECEIVE, ANY, &msg);
         //printf("s");
     }
 }
@@ -41,7 +45,7 @@ static void StartShell()
 	privilege = PRIVILEGE_TASK;
 	rpl = RPL_TASK;
 	eflags = 0x202; /* IF=1, bit 2 is always 1 */
-	prio = 1;
+	prio = 10;
 
 	p_proc = proc_table[pid] = (struct proc*) do_kmalloc_inner(sizeof(struct proc));
 
@@ -89,5 +93,10 @@ static void StartShell()
 	p_proc->ticks = p_proc->priority = prio;
 
 	p_proc->pageDirBase = PAGE_DIR_BASE;
+
+	p_proc->pl = (PROC_MSG_LIST*)kmalloc(sizeof(PROC_MSG_LIST));
+	p_proc->pl->count = 0;
+	p_proc->pl->p_head = p_proc->pl->p_tail = p_proc->pl->data;
+
 	p_proc->p_flags = 0;
 }

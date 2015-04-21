@@ -107,6 +107,8 @@ csinit:		; “这个跳转指令强制使用刚刚初始化的结构”——<<O
 
 	;sti
 
+	;初始化FPU
+	finit
 
 	jmp	kernel_main
 
@@ -124,7 +126,7 @@ csinit:		; “这个跳转指令强制使用刚刚初始化的结构”——<<O
 	out	INT_M_CTLMASK, al	; /
 	mov	al, EOI			; `. 置EOI位
 	out	INT_M_CTL, al		; /
-	sti	; CPU在响应中断的过程中会自动关中断，这句之后就允许响应新的中断
+	;sti	; CPU在响应中断的过程中会自动关中断，这句之后就允许响应新的中断
 
 
 	push	%1			; `.
@@ -133,7 +135,7 @@ csinit:		; “这个跳转指令强制使用刚刚初始化的结构”——<<O
 
 
 
-	cli
+	;cli
 	in	al, INT_M_CTLMASK	; `.
 	and	al, ~(1 << %1)		;  | 恢复接受当前中断
 	out	INT_M_CTLMASK, al	; /
@@ -184,7 +186,7 @@ hwint07:		; Interrupt routine for irq 7 (printer)
 	out	INT_M_CTL, al		; /
 	nop				; `. 置EOI位(slave)
 	out	INT_S_CTL, al		; /  一定注意：slave和master都要置EOI
-	sti	; CPU在响应中断的过程中会自动关中断，这句之后就允许响应新的中断
+	;sti	; CPU在响应中断的过程中会自动关中断，这句之后就允许响应新的中断
 
 
 	push	%1			; `.
@@ -192,7 +194,7 @@ hwint07:		; Interrupt routine for irq 7 (printer)
 	pop	ecx			; /
 
 
-	cli
+	;cli
 	in	al, INT_S_CTLMASK	; `.
 	and	al, ~(1 << (%1 - 8))	;  | 恢复接受当前中断
 	out	INT_S_CTLMASK, al	; /

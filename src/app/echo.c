@@ -4,6 +4,8 @@
  *  Created on: 2014年12月11日
  *      Author: zxb
  */
+
+
 int printf(const char *fmt, ...);
 int	printx(char* str);
 void* malloc(unsigned int size);

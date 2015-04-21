@@ -6,6 +6,23 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 
+#define MSG_CHAR		0
+
+#define		PROC_MSG_MAX	256
+
+typedef struct MSG{
+	int type;
+	int param1;
+	int param2;
+}MSG;
+typedef struct s_proc_list
+{
+	struct MSG	data[PROC_MSG_MAX];	/* TTY 输入缓冲区 */
+	struct MSG*	p_head;		/* 指向缓冲区中下一个空闲位置 */
+	struct MSG*	p_tail;		/* 指向键盘任务应处理的键值 */
+	int	count;				/* 缓冲区中已经填充了多少 */
+}PROC_MSG_LIST;
+
 struct stackframe {	/* proc_ptr points here				↑ Low			*/
 	u32	gs;		/* ┓						│			*/
 	u32	fs;		/* ┃						│			*/
@@ -69,6 +86,8 @@ struct proc {
 	u32	filp[MAX_PROC_FILES];
 
 	u32 vAddrHeapStart;
+
+	PROC_MSG_LIST* pl;
 };
 
 struct task {
@@ -81,7 +100,7 @@ struct task {
 int proc2pid(struct proc* p);
 
 /* Number of tasks & procs */
-#define NR_TASKS	7
+#define NR_TASKS	8
 #define NR_PROCS	32
 #define NR_NATIVE_PROCS 		1
 #define NR_ALL_PROCS (NR_TASKS + NR_PROCS)
@@ -102,6 +121,8 @@ int proc2pid(struct proc* p);
 #define STACK_SIZE_MM			STACK_SIZE_DEFAULT
 #define STACK_SIZE_GUI			STACK_SIZE_DEFAULT
 #define STACK_SIZE_INIT			STACK_SIZE_DEFAULT
+#define STACK_SIZE_MOUSE			STACK_SIZE_DEFAULT
+
 //#define STACK_SIZE_TESTA		STACK_SIZE_DEFAULT
 //#define STACK_SIZE_TESTB		STACK_SIZE_DEFAULT
 //#define STACK_SIZE_TESTC		STACK_SIZE_DEFAULT
@@ -112,5 +133,8 @@ int proc2pid(struct proc* p);
 				STACK_SIZE_FS + \
 				STACK_SIZE_MM + \
 				STACK_SIZE_GUI + \
-				STACK_SIZE_INIT )
+				STACK_SIZE_INIT + \
+				STACK_SIZE_MOUSE)
+
+
 

@@ -7,8 +7,8 @@
  *****************************************************************************
  *****************************************************************************/
 
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
 #include "../include/fs.h"
 #include "../include/protect.h"
 #include "../include/string.h"

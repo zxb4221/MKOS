@@ -5,9 +5,9 @@
                                                     Forrest Yu, 2005
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
+
 #include "../include/protect.h"
 #include "../include/fs.h"
 #include "../include/proc.h"
@@ -17,6 +17,9 @@
 #include "../include/proto.h"
 
 
+/*======================================================================*
+                            init_8259A
+ *======================================================================*/
 /*======================================================================*
                             init_8259A
  *======================================================================*/
@@ -31,8 +34,8 @@ PUBLIC void init_8259A()
 	out_byte(INT_M_CTLMASK,	0x1);			/* Master 8259, ICW4. */
 	out_byte(INT_S_CTLMASK,	0x1);			/* Slave  8259, ICW4. */
 
-	out_byte(INT_M_CTLMASK,	0xFF);	/* Master 8259, OCW1. 屏蔽主8259所有中断*/
-	out_byte(INT_S_CTLMASK,	0xFF);	/* Slave  8259, OCW1. 屏蔽从8259所有中断*/
+	out_byte(INT_M_CTLMASK,	0xF9);	/* Master 8259, OCW1. 屏蔽主8259所有中断*/
+	out_byte(INT_S_CTLMASK,	0xE7);	/* Slave  8259, OCW1. 屏蔽从8259所有中断*/
 
 	int i;
 	for (i = 0; i < NR_IRQ; i++) {

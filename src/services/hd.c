@@ -7,9 +7,8 @@
  * @date   2005~2008
  *****************************************************************************
  *****************************************************************************/
-
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
 #include "../include/fs.h"
 #include "../include/protect.h"
 #include "../include/proc.h"

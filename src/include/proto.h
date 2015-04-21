@@ -76,6 +76,7 @@ PUBLIC void task_fs();
 PUBLIC void task_mm();
 PUBLIC void task_gui();
 PUBLIC void task_init();
+void task_mouse();
 PUBLIC void hd_handler(int irq);
 
 /* console.c */

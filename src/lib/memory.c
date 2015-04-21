@@ -1,3 +1,4 @@
+#include "../include/const.h"
 #include "../include/type.h"
 
 void memman_init(struct MEMMAN *man)

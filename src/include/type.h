@@ -86,6 +86,28 @@ struct MM
 };
 
 
+///////////////////GUI
 
+struct SHTCTL;
+
+
+struct SHEET {
+	u32* buf;
+	int bxsize;	//width
+	int bysize; //height
+	int vx0; //offset from x
+	int vy0; //offset from y
+	int col_inv, height, flags;
+	u8 name[12];
+	struct SHTCTL* ctl;
+};
+
+struct SHTCTL {
+	u32* map;
+	u8* vram;
+	int xsize, ysize, top;				//top 代表最上面图层的高度
+	struct SHEET *sheets[MAX_SHEETS];
+	struct SHEET sheets0[MAX_SHEETS];
+};
 
 #endif /* _ORANGES_TYPE_H_ */

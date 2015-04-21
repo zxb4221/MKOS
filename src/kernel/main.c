@@ -4,9 +4,9 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                     Forrest Yu, 2005
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
+
 #include "../include/fs.h"
 #include "../include/protect.h"
 #include "../include/string.h"
@@ -47,6 +47,8 @@ PUBLIC int kernel_main()
 		rpl = RPL_TASK;
 		eflags = 0x1202; /* IF=1, IOPL=1, bit 2 is always 1 */
 		prio = 1;
+		if(i == 7 || i == 5)
+			prio = 5;
 
 		strcpy(p_proc->name, p_task->name); /* name of the process */
 		p_proc->p_parent = NO_TASK;
@@ -97,6 +99,8 @@ PUBLIC int kernel_main()
 	init_clock();
 
 	init_keyboard();
+	//enable_mouse();
+	init_mouse();
 
 	disp_str("-----\"kernel_main\" finished-----\n");
 	restart();

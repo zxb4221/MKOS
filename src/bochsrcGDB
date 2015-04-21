@@ -643,7 +643,7 @@ vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
 #   mouse: type=serial, enabled=1
 #   mouse: enabled=0, toggle=ctrl+f10
 #=======================================================================
-mouse: enabled=0
+mouse: enabled=1
 
 #=======================================================================
 # PCI:

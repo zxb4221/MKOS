@@ -9,6 +9,7 @@ cp ./test/TESTFILE	/mnt/fat32/
 cp ./test/TESTCALL /mnt/fat32/
 cp ./app/ECHO /mnt/fat32/
 cp ./data/ASC16 /mnt/fat32/
+cp ./data/BK.bmp /mnt/fat32/
 sync
 
 

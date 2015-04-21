@@ -202,7 +202,10 @@ enum msgtype {
 	DEV_CLOSE,
 	DEV_READ,
 	DEV_WRITE,
-	DEV_IOCTL
+	DEV_IOCTL,
+
+	/*GUI	*/
+	CREATEWINDOW,UPDATEWINDOW,GUILOG
 };
 
 /* macros for messages */
@@ -274,6 +277,8 @@ enum msgtype {
 
 /*                                          MM                                                                        */
 #define         USER_PROC_PID_START               10
+
+#define MAX_SHEETS		256
 
 
 #endif /* _ORANGES_CONST_H_ */

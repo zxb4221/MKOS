@@ -1,5 +1,5 @@
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
 #include "../include/fs.h"
 #include "../include/protect.h"
 #include "../include/proc.h"
@@ -72,7 +72,9 @@ PUBLIC void task_fs()
 			do_close(&fs_msg);
 			break;
 		case READ:
+
 			do_read(&fs_msg);
+
 			break;
 		case WRITE:
 			//fs_msg.CNT = do_rdwt();
@@ -210,16 +212,27 @@ PRIVATE void do_read(MESSAGE* pMsg)
 
 	do
 	{
-		size -= ReadFileToMemory(nCurFat, szDesBuffer);
-		szDesBuffer += SECTOR_SIZE;
+		int reSize = ReadFileToMemory(nCurFat, szDesBuffer);
+		if (nByteRest)
+		{
+			memcpy(szOrg, szOrg + nByteRest, SECTOR_SIZE-nByteRest);
+			nByteRest = 0;
+			szDesBuffer += SECTOR_SIZE-nByteRest;
+		}
+		else
+		{
+
+			szDesBuffer += SECTOR_SIZE;
+		}
+		size -= reSize;
+
+
 		if(isFatEnd(nCurFat, &nNextFat) || size <= 0)
 			break;
 		else
 			nCurFat = nNextFat;
 	}while (1);
 
-	if (nByteRest)
-		memcpy(szOrg, szOrg + nByteRest, pMsg->u.m3.m3i1);
 
 
 }

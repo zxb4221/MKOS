@@ -6,9 +6,9 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 #define GLOBAL_VARIABLES_HERE
-
-#include "../include/type.h"
 #include "../include/const.h"
+#include "../include/type.h"
+
 #include "../include/fs.h"
 #include "../include/protect.h"
 #include "../include/tty.h"
@@ -28,7 +28,8 @@ PUBLIC	struct task	task_table[NR_TASKS] = {
 	{task_fs, STACK_SIZE_FS, "FS"},
 	{task_mm, STACK_SIZE_MM, "MM"},
 	{task_gui, STACK_SIZE_GUI, "GUI"},
-	{task_init, STACK_SIZE_INIT, "INIT"}
+	{task_init, STACK_SIZE_INIT, "INIT"},
+	{task_mouse, STACK_SIZE_MOUSE, "MOUSE"}
 	};
 /*
 PUBLIC	struct task	user_proc_table[NR_PROCS] = {
